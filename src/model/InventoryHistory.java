@@ -35,6 +35,9 @@ public class InventoryHistory {
         public Instant getOccurredAt() {
             return occurredAt;
         }
+        public List<InventoryHistory> getHistory() {
+            return new ArrayList<>(history);
+        }
 
     }
 }
