@@ -7,9 +7,15 @@ public class InventoryRepository {
     private final Map<Integer, InventoryItem> inventory = new HashMap<>();
 
     public void save(InventoryItem inventoryItem) {
-        if (inventoryItem == null) {
+        if(inventoryItem == null) {
             throw new IllegalArgumentException("Inventory item cannot be null");
         }
+        int id = inventoryItem.getInventoryId();
+
+        if (inventory.containsKey(id)) {
+            throw new IllegalArgumentException("Inventory item with ID " + id + " already exists");
+        }
+
         inventory.put(inventoryItem.getInventoryId(), inventoryItem);
     }
 
@@ -17,11 +23,11 @@ public class InventoryRepository {
         if (inventoryId <= 0) {
             throw new IllegalArgumentException("Inventory ID must be positive");
         }
-        if(inventory.containsKey(inventoryId)) {
-            return inventory.get(inventoryId);
-        } else {
+        InventoryItem item = inventory.get(inventoryId);
+        if (item == null) {
             throw new IllegalArgumentException("Inventory item with ID " + inventoryId + " does not exist");
         }
+        return item;
     }
 
     public List<InventoryItem> findDonationByDonationId(int donationId) {
