@@ -1,13 +1,10 @@
+package model;
+
 import java.time.Instant;
 
-enum DonationStatus {
-    CREATED,
-    PENDING,
-    COMPLETED,
-    FAILED
-}
+import common.DonationStatus;
 
-class Donation {
+public class Donation {
     private final int donationId;
     private final int donorId;
     private final int recordedBy;
