@@ -1,7 +1,11 @@
 package Services;
 import model.InventoryItem;
 import common.InventoryChangeType;
+
+import java.util.*;
+
 import Repository.InventoryRepository;
+import model.InventoryHistory;
 
 public class InventoryService {
     private final InventoryRepository inventoryRepository;
@@ -19,11 +23,12 @@ public class InventoryService {
             throw new IllegalArgumentException("Inventory item cannot be null");
         }
         inventoryRepository.save(inventoryItem);
+        history.add(new InventoryHistory(inventoryItem.getInventoryId(), inventoryItem.getQuantity(), InventoryChangeType.DONATION_RECEIVED));
     }
 
     public void adjustStock(int inventoryId, int adjustment, InventoryChangeType changeType) {
-        if (inventoryId <= 0) {
-            throw new IllegalArgumentException("Inventory ID must be positive");
+        if(adjustment == 0) {
+            throw new IllegalArgumentException("Adjustment cannot be zero");
         }
         if (changeType == null) {
             throw new IllegalArgumentException("Change type cannot be null");
@@ -33,5 +38,7 @@ public class InventoryService {
         history.add(new InventoryHistory(inventoryId, adjustment, changeType));
     }
 
-
+     public List<InventoryHistory> getHistory() {
+            return new ArrayList<>(history);
+        }
 }

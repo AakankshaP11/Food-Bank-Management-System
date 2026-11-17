@@ -11,17 +11,16 @@ public class InventoryHistory {
         if (inventoryId <= 0) {
             throw new IllegalArgumentException("Inventory ID must be positive");
         }
+
         if (changeType == null) {
             throw new IllegalArgumentException("Change type cannot be null");
         }
-        if (occurredAt == null) {
-            throw new IllegalArgumentException("Occurred at timestamp cannot be null");
-        }
+
         this.inventoryId = inventoryId;
         this.quantityChange = quantityChange;
         this.changeType = changeType;
         this.occurredAt = Instant.now();
-
+    }
         public int getInventoryId() {
             return inventoryId;
         }
@@ -35,9 +34,6 @@ public class InventoryHistory {
         public Instant getOccurredAt() {
             return occurredAt;
         }
-        public List<InventoryHistory> getHistory() {
-            return new ArrayList<>(history);
-        }
+       
 
     }
-}
