@@ -27,6 +27,10 @@ public class FoodHamperRequest {
     public int getRecipientId() {
         return recipientId;
     }
+    public HamperRequestStatus getStatus() {
+        return status;
+    }
+    
     public void schedulePickup(LocalDate pickupDate) {
         if (pickupDate == null || pickupDate.isBefore(requestDate)) {
             throw new IllegalArgumentException("Pickup date cannot be null or before the request date");
