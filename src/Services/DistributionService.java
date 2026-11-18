@@ -87,7 +87,12 @@ public class DistributionService {
 
         // Find hamper request
         FoodHamperRequest request = hamperRequestRepository.findById(distribution.getRequestId());
-
+        // cancelled order fulfillment
+        if (request.getStatus() == HamperRequestStatus.CANCELLED) {
+            throw new IllegalStateException(
+                "Cannot fulfill a cancelled hamper request"
+            );
+        }
         // adjust stock
         for(DistributionItem item: distribution.getItems()) {
             int inventoryId = item.getInventoryId();
@@ -99,6 +104,41 @@ public class DistributionService {
         request.markFulfilled();
         
     }
+    public void markMissedPickup(int distributionId){
+        if(distributionId<=0){
+            throw new IllegalArgumentException("distribution id = 0");
+        }
 
+        Distribution distribution = distributionRepository.findById(distributionId);
+
+        if (distribution==null){
+            throw new IllegalStateException("distribution not found");
+        }
+
+        if(distribution.getPickupStatus() != PickupStatus.SCHEDULED){
+            throw new IllegalArgumentException("pickup was not scheduled");
+        }
+
+        distribution.markPickupStatus(PickupStatus.MISSED);
+
+    }
+
+    public void markDelayedPickup(int distributionId){
+        if(distributionId<=0){
+            throw new IllegalArgumentException("distribution id = 0");
+        }
+
+        Distribution distribution = distributionRepository.findById(distributionId);
+
+        if (distribution==null){
+            throw new IllegalStateException("distribution not found");
+        }
+
+        if(distribution.getPickupStatus() != PickupStatus.SCHEDULED){
+            throw new IllegalArgumentException("pickup was not scheduled");
+        }
+
+        distribution.markPickupStatus(PickupStatus.DELAYED);
+    }
 
 }
