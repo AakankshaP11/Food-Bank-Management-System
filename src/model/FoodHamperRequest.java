@@ -47,4 +47,11 @@ public class FoodHamperRequest {
         }
         this.status = HamperRequestStatus.CANCELLED;
     }
+
+    public void markFulfilled(){
+        if (status != HamperRequestStatus.SCHEDULED) {
+            throw new IllegalStateException("Only scheduled hamper requests can be fulfilled");
+        }
+        status = HamperRequestStatus.FULFILLED;
+    }
 }
